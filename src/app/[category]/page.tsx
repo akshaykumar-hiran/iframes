@@ -1,25 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { FC } from "react";
-import { Heart, ShoppingCart, User, Mail, Phone } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
-import Link from "next/link";
+import { categories } from "@/data/categories";
+import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCorousal";
-import { categories } from "@/data/categories";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-export default function Home() {
-  const { user, logout } = useAuth();
-  const router = useRouter();
-  const { slides, products } = categories["home"];
+export default function CategoryPage({
+  params,
+}: {
+  params: { category: string };
+}) {
+  const categoryData = categories[params.category] || categories["home"];
 
+  if (!categoryData) return notFound(); // invalid category -> 404
 
+  const { slides, products } = categoryData;
 
   return (
     <div className="bg-gradient-to-b from-purple-50 to-white min-h-screen">
